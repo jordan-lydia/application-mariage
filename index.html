@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation Mariage - Michelle & Mike</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #c5a059;
+            --dark: #1a1a1a;
+            --white: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--white);
+            color: var(--dark);
+            scroll-behavior: smooth;
+        }
+
+        /* Hero Section */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('dan.jpeg'); /* REMPLACE PAR TON IMAGE */
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        h1 { font-family: 'Great Vibes', cursive; font-size: 4rem; margin: 10px 0; color: var(--gold); }
+        h2 { text-transform: uppercase; letter-spacing: 3px; font-size: 1.2rem; }
+
+        /* Card Style */
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 90%;
+            margin: 20px auto;
+            border-top: 5px solid var(--gold);
+        }
+
+        .btn {
+            background-color: var(--dark);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 15px 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--gold);
+            color: var(--dark);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .dress-code {
+            font-weight: bold;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        #qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="section hero">
+        <h2>Invitation</h2>
+        <h1>Michelle & Mike</h1>
+        <p>Défiler vers le bas</p>
+        <div style="font-size: 2rem;">↓</div>
+    </section>
+
+    <section class="section">
+        <div class="card">
+            <h2>Mariage Religieux</h2>
+            <p>Entourés de leurs familles, Michelle & Mike ont l'immense joie de vous convier aux festivités.</p>
+            <hr style="border: 0; border-top: 1px solid var(--gold); width: 50px; margin: 20px auto;">
+            <p><strong>VENDREDI 27 FÉVRIER 2026</strong></p>
+            <p><strong>12h00 :</strong> Bénédiction nuptiale à la Paroisse Saint Michel, Bandalungwa.</p>
+            <p><strong>20h00 :</strong> Soirée dansante au Grand Chapiteau de GB.</p>
+            <p class="dress-code">Dress Code: Black and Gold</p>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #f9f9f9;">
+        <div class="card">
+            <h2>RSVP</h2>
+            <p>Merci de confirmer votre présence avant le 10 Février 2026.</p>
+            <form id="rsvp-form">
+                <input type="text" id="guest-name" placeholder="Votre Nom Complet" required>
+                <select id="guest-status">
+                    <option value="present">Je serai présent(e)</option>
+                    <option value="absent">Je serai absent(e)</option>
+                </select>
+                
+                <h3>Boisson préférée</h3>
+                <select id="guest-drink">
+                    <option value="Coca">Coca</option>
+                    <option value="Heineken">Heineken</option>
+                    <option value="Beaufort">Beaufort</option>
+                    <option value="Vino">Jus / Eau</option>
+                </select>
+
+                <button type="submit" class="btn" id="submit-btn">Confirmer</button>
+            </form>
+            <p id="success-msg" style="display:none; color: green;">Merci ! Votre réponse a été enregistrée.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="card">
+            <h2>Cadeaux</h2>
+            <p>Votre présence est notre plus beau trésor. Si vous souhaitez nous gâter :</p>
+            <div class="choice-grid">
+                <div style="border: 1px solid var(--gold); padding: 10px;">Enveloppe</div>
+                <div style="border: 1px solid var(--gold); padding: 10px;">Présents</div>
+            </div>
+            <br><br>
+            <h2>Votre Accès QR</h2>
+            <div id="qr-code">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=INVITE-MICHELLE-MIKE" alt="QR Code">
+            </div>
+            <button class="btn" onclick="window.print()">Télécharger l'invitation</button>
+        </div>
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Ta configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWyJKgpzjajwaIj7qJnYqe0mA1a5tnKok",
+            authDomain: "application-dan-93c76.firebaseapp.com",
+            projectId: "application-dan-93c76",
+            storageBucket: "application-dan-93c76.firebasestorage.app",
+            messagingSenderId: "320857345541",
+            appId: "1:320857345541:web:1179185b59e6539275966c"
+        };
+
+        // Initialisation
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Gestion du Formulaire RSVP
+        const rsvpForm = document.getElementById('rsvp-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const successMsg = document.getElementById('success-msg');
+
+        rsvpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.innerText = "Envoi en cours...";
+            submitBtn.disabled = true;
+
+            const name = document.getElementById('guest-name').value;
+            const status = document.getElementById('guest-status').value;
+            const drink = document.getElementById('guest-drink').value;
+
+            try {
+                await addDoc(collection(db, "confirmations"), {
+                    nom: name,
+                    statut: status,
+                    boisson: drink,
+                    date: new Error().toISOString()
+                });
+                
+                rsvpForm.style.display = 'none';
+                successMsg.style.display = 'block';
+            } catch (error) {
+                console.error("Erreur lors de l'envoi: ", error);
+                alert("Erreur. Veuillez réessayer.");
+                submitBtn.innerText = "Confirmer";
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
