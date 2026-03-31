@@ -106,6 +106,48 @@
             gap: 10px;
             margin-top: 20px;
         }
+        .boissons-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.drink-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.drink-item {
+    border: 1px solid #ccc;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.drink-item:hover {
+    border-color: var(--gold);
+}
+
+/* Style quand un boisson est sélectionnée */
+.drink-item.selected {
+    background-color: var(--dark);
+    color: var(--gold);
+    border-color: var(--gold);
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.1rem;
+    margin: 15px 0;
+    color: #444;
+}
     </style>
 </head>
 <body>
@@ -130,28 +172,43 @@
     </section>
 
     <section class="section" style="background-color: #f9f9f9;">
-        <div class="card">
-            <h2>RSVP</h2>
-            <p>Merci de confirmer votre présence avant le 10 Février 2026.</p>
-            <form id="rsvp-form">
-                <input type="text" id="guest-name" placeholder="Votre Nom Complet" required>
-                <select id="guest-status">
-                    <option value="present">Je serai présent(e)</option>
-                    <option value="absent">Je serai absent(e)</option>
-                </select>
-                
-                <h3>Boisson préférée</h3>
-                <select id="guest-drink">
-                    <option value="Coca">Coca</option>
-                    <option value="Heineken">Heineken</option>
-                    <option value="Beaufort">Beaufort</option>
-                    <option value="Vino">Jus / Eau</option>
-                </select>
+<div class="card">
+    <h2>RSVP</h2>
+    <p>Merci de confirmer votre présence.</p>
+    
+    <form id="rsvp-form">
+        <input type="text" id="guest-name" placeholder="Votre Nom Complet" required>
+        
+        <div class="boissons-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/3170/3170733.png" width="50" alt="icon">
+            <p>Aidez-nous à planifier notre grand jour en nous suggérant vos boissons préférées.</p>
+            
+            <h3>Boissons sans Alcool</h3>
+            <div class="drink-grid" id="soft-drinks">
+                <div class="drink-item">COCA</div>
+                <div class="drink-item">ENERGY MALT</div>
+                <div class="drink-item">FANTA</div>
+                <div class="drink-item">MALTINA</div>
+                <div class="drink-item">SPRITE</div>
+                <div class="drink-item">TONIC</div>
+                <div class="drink-item">VITALO</div>
+            </div>
 
-                <button type="submit" class="btn" id="submit-btn">Confirmer</button>
-            </form>
-            <p id="success-msg" style="display:none; color: green;">Merci ! Votre réponse a été enregistrée.</p>
+            <h3>Boissons avec Alcool</h3>
+            <div class="drink-grid" id="alcohol-drinks">
+                <div class="drink-item">BEAUFORT</div>
+                <div class="drink-item">CASTEL</div>
+                <div class="drink-item">CLASS</div>
+                <div class="drink-item">HEINEKEN</div>
+                <div class="drink-item">LEGEND</div>
+                <div class="drink-item">MUTZIG</div>
+            </div>
         </div>
+
+        <button type="submit" class="btn" id="submit-btn" style="margin-top:30px;">CONFIRMER</button>
+    </form>
+    <p id="success-msg" style="display:none; color: #c5a059; font-weight: bold;">C'est enregistré ! Merci.</p>
+</div>
     </section>
 
     <section class="section">
@@ -219,6 +276,52 @@
                 submitBtn.innerText = "Confirmer";
                 submitBtn.disabled = false;
             }
+            // --- Logique de sélection des boissons ---
+let selectedDrink = "";
+const drinkItems = document.querySelectorAll('.drink-item');
+
+drinkItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // Retirer la sélection des autres
+        drinkItems.forEach(i => i.classList.remove('selected'));
+        // Ajouter à l'élément cliqué
+        item.classList.add('selected');
+        selectedDrink = item.innerText;
+    });
+});
+
+// --- Modification de la fonction d'envoi ---
+const rsvpForm = document.getElementById('rsvp-form');
+
+rsvpForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if(!selectedDrink) {
+        alert("Veuillez suggérer une boisson SVP !");
+        return;
+    }
+
+    const name = document.getElementById('guest-name').value;
+    const submitBtn = document.getElementById('submit-btn');
+
+    submitBtn.innerText = "CHARGEMENT...";
+    submitBtn.disabled = true;
+
+    try {
+        await addDoc(collection(db, "confirmations"), {
+            nom: name,
+            boisson_preferee: selectedDrink,
+            date_inscription: new Date().toLocaleString()
+        });
+        
+        document.getElementById('rsvp-form').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+    } catch (error) {
+        console.error("Erreur:", error);
+        alert("Erreur lors de l'envoi.");
+        submitBtn.disabled = false;
+    }
+    });
         });
     </script>
 </body>
