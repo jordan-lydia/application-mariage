@@ -2,327 +2,718 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitation Mariage - Dan & Rachel</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gold: #c5a059;
-            --dark: #1a1a1a;
-            --white: #ffffff;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Michelle & Mike - Notre Mariage Élégant</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase SDKs (modular) -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+            }
         }
-
-        body, html {
+    </script>
+    <style>
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--white);
-            color: var(--dark);
-            scroll-behavior: smooth;
-        }
-
-        /* Hero Section */
-        .section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
             box-sizing: border-box;
         }
 
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('dan.jpeg'); /* REMPLACE PAR TON IMAGE */
-            background-size: cover;
-            background-position: center;
-            color: white;
+        body {
+            background: #faf6f0;
+            font-family: 'Inter', sans-serif;
+            color: #2e241f;
+            scroll-behavior: smooth;
         }
 
-        h1 { font-family: 'Great Vibes', cursive; font-size: 4rem; margin: 10px 0; color: var(--gold); }
-        h2 { text-transform: uppercase; letter-spacing: 3px; font-size: 1.2rem; }
-
-        /* Card Style */
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        /* Container principal */
+        .app-container {
             max-width: 500px;
-            width: 90%;
-            margin: 20px auto;
-            border-top: 5px solid var(--gold);
+            margin: 0 auto;
+            background: #fffef7;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+            min-height: 100vh;
+            border-radius: 0;
+            overflow-x: hidden;
         }
 
-        .btn {
-            background-color: var(--dark);
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            padding: 15px 30px;
-            text-transform: uppercase;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            margin: 10px;
-            text-decoration: none;
-            display: inline-block;
+        /* Header avec photo du couple */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, #1f1a17 0%, #2c241f 100%);
+            padding: 1.8rem 1.5rem 2rem;
+            text-align: center;
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            margin-bottom: 1.5rem;
         }
 
-        .btn:hover {
-            background-color: var(--gold);
-            color: var(--dark);
+        .couple-photo {
+            width: 110px;
+            height: 110px;
+            background: url('dan.jpeg') center center/cover no-repeat;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            border: 4px solid #e9c891;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background-color: #d9b48b;
         }
 
-        input, select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .dress-code {
-            font-weight: bold;
-            color: var(--gold);
-            font-size: 1.2rem;
-        }
-
-        #qr-code {
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
-            background: #eee;
+        /* fallback si image pas dispo */
+        .couple-photo:before {
+            content: "👰‍♀️🤵‍♂️";
+            font-size: 3rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: #b87c4f;
+            border-radius: 50%;
         }
 
-        .choice-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            letter-spacing: 1px;
+            color: #f9e7c2;
+            margin-bottom: 0.25rem;
+        }
+
+        .hero p {
+            color: #e9d6b0;
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+
+        .date-badge {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.8rem;
+            color: #ffefcf;
+        }
+
+        /* cartes */
+        .card {
+            background: white;
+            margin: 1rem 1.2rem;
+            border-radius: 1.75rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.2s ease;
+            border: 1px solid #f3ede5;
+        }
+
+        .card-header {
+            padding: 1.2rem 1.5rem 0.5rem;
+            border-bottom: 2px solid #f5ede3;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .card-header i {
+            font-size: 1.6rem;
+            color: #c9a87b;
+        }
+
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #3b2c23;
+        }
+
+        .card-body {
+            padding: 1rem 1.5rem 1.5rem;
+        }
+
+        /* RSVP button */
+        .btn-confirm {
+            background: #c7a15e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .btn-confirm:hover {
+            background: #b28a4a;
+            transform: scale(0.98);
+        }
+
+        .status-msg {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* liste boissons */
+        .drinks-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .drinks-group h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a17f58;
+            margin-bottom: 0.8rem;
+        }
+
+        .drink-items {
+            display: flex;
+            flex-wrap: wrap;
             gap: 10px;
-            margin-top: 20px;
         }
-        .boissons-container {
-    text-align: center;
-    margin-top: 20px;
-}
 
-.drink-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 20px;
-}
+        .drink-chip {
+            background: #f7f2ea;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #e3d5c8;
+            color: #3a2c23;
+        }
 
-.drink-item {
-    border: 1px solid #ccc;
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-    text-transform: uppercase;
-    color: #666;
-}
+        .drink-chip.selected {
+            background: #c7a15e;
+            color: white;
+            border-color: #c7a15e;
+            box-shadow: 0 2px 8px rgba(199,161,94,0.3);
+        }
 
-.drink-item:hover {
-    border-color: var(--gold);
-}
+        .table-select {
+            margin: 1rem 0 1rem;
+        }
 
-/* Style quand un boisson est sélectionnée */
-.drink-item.selected {
-    background-color: var(--dark);
-    color: var(--gold);
-    border-color: var(--gold);
-    font-weight: bold;
-}
+        .table-select label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
 
-h3 {
-    font-size: 1.1rem;
-    margin: 15px 0;
-    color: #444;
-}
+        .table-select input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 50px;
+            border: 1px solid #e2d5ca;
+            background: #fffcf8;
+            font-family: inherit;
+        }
+
+        .btn-order {
+            background: #2e241f;
+            color: #f9e7c2;
+            width: 100%;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        /* livre d'or */
+        .guestbook textarea {
+            width: 100%;
+            border-radius: 1.5rem;
+            border: 1px solid #e6dbcf;
+            padding: 0.9rem;
+            font-family: inherit;
+            resize: vertical;
+            background: #fffbf5;
+        }
+
+        .btn-send {
+            background: #c7a15e;
+            color: white;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-top: 0.7rem;
+            width: 100%;
+        }
+
+        .gift-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .gift-btn {
+            flex: 1;
+            background: #f3ede5;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .gift-btn.active {
+            background: #c7a15e;
+            color: white;
+        }
+
+        .qr-section {
+            background: #fef5ea;
+            border-radius: 1rem;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .small-note {
+            font-size: 0.7rem;
+            color: #8f7357;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 1.5rem;
+            color: #b59373;
+        }
+
+        i.fa, i.far, i.fas {
+            pointer-events: none;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2e241fe6;
+            color: #ffefcf;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+<div class="app-container">
+    <!-- Hero avec photo Dan.jpeg -->
+    <div class="hero">
+        <div class="couple-photo" style="background-image: url('dan.jpeg'); background-size: cover; background-position: center;"></div>
+        <h1>Michelle & Mike</h1>
+        <p>27 Février 2026 · Black & Gold</p>
+        <div class="date-badge"><i class="fas fa-calendar-alt"></i> Vendredi 27 Février 2026</div>
+    </div>
 
-    <section class="section hero">
-        <h2>Invitation</h2>
-        <h1>Dan & Rachel</h1>
-        <p>Défiler vers le bas</p>
-        <div style="font-size: 2rem;">↓</div>
-    </section>
-
-    <section class="section">
-        <div class="card">
-            <h2>Mariage Religieux</h2>
-            <p>Entourés de leurs familles, Dan & Rachel ont l'immense joie de vous convier aux festivités.</p>
-            <hr style="border: 0; border-top: 1px solid var(--gold); width: 50px; margin: 20px auto;">
-            <p><strong>VENDREDI 27 FÉVRIER 2026</strong></p>
-            <p><strong>12h00 :</strong> Bénédiction nuptiale à la Paroisse Saint Michel, Bandalungwa.</p>
-            <p><strong>20h00 :</strong> Soirée dansante au Grand Chapiteau de GB.</p>
-            <p class="dress-code">Dress Code: Black and Gold</p>
+    <!-- Carte Invitation / infos clés -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-envelope-open-text"></i>
+            <h2>Invitation</h2>
         </div>
-    </section>
+        <div class="card-body">
+            <p style="margin-bottom: 6px;"><strong>12h00</strong> : Bénédiction nuptiale<br>Paroisse Saint Michel, C/Bandalungwa</p>
+            <p><strong>20h00</strong> : Soirée dansante<br>Grand chapiteau GB, 11268 av. OUA, Ngaliema (Réf. Décathlon GB)</p>
+            <p style="margin-top: 10px; font-weight: 500; color:#b47c44;"><i class="fas fa-tshirt"></i> Dress code: Black & Gold</p>
+        </div>
+    </div>
 
-    <section class="section" style="background-color: #f9f9f9;">
-<div class="card">
-    <h2>RSVP</h2>
-    <p>Merci de confirmer votre présence.</p>
-    
-    <form id="rsvp-form">
-        <input type="text" id="guest-name" placeholder="Votre Nom Complet" required>
-        
-        <div class="boissons-container">
-            <img src="https://cdn-icons-png.flaticon.com/512/3170/3170733.png" width="50" alt="icon">
-            <p>Aidez-nous à planifier notre grand jour en nous suggérant vos boissons préférées.</p>
-            
-            <h3>Boissons sans Alcool</h3>
-            <div class="drink-grid" id="soft-drinks">
-                <div class="drink-item">COCA</div>
-                <div class="drink-item">ENERGY MALT</div>
-                <div class="drink-item">FANTA</div>
-                <div class="drink-item">MALTINA</div>
-                <div class="drink-item">SPRITE</div>
-                <div class="drink-item">TONIC</div>
-                <div class="drink-item">VITALO</div>
+    <!-- RSVP Card -->
+    <div class="card" id="rsvpCard">
+        <div class="card-header">
+            <i class="fas fa-check-circle"></i>
+            <h2>RSVP · Confirmation</h2>
+        </div>
+        <div class="card-body">
+            <p style="margin-bottom: 12px;">Merci de confirmer votre présence avant le <strong>27 février 2026</strong>.</p>
+            <button id="confirmRsvpBtn" class="btn-confirm"><i class="fas fa-calendar-check"></i> CONFIRMER MA PRÉSENCE</button>
+            <div id="rsvpStatus" class="status-msg">❌ Vous n'avez pas encore confirmé.</div>
+        </div>
+    </div>
+
+    <!-- Boissons / Commande avec table -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-glass-cheers"></i>
+            <h2>Boissons préférées</h2>
+        </div>
+        <div class="card-body">
+            <p style="font-size: 0.85rem; margin-bottom: 12px;">Aidez-nous à planifier : sélectionnez une ou plusieurs boissons + votre table</p>
+            <div class="drinks-group">
+                <h4>🚫 Sans Alcool</h4>
+                <div class="drink-items" id="softDrinksContainer">
+                    <!-- dynamique via js -->
+                </div>
             </div>
+            <div class="drinks-group">
+                <h4>🍺 Avec Alcool</h4>
+                <div class="drink-items" id="alcoholDrinksContainer"></div>
+            </div>
+            <div class="table-select">
+                <label><i class="fas fa-chair"></i> Numéro de table / Nom de table</label>
+                <input type="text" id="tableNameInput" placeholder="ex: Table 5, Table des amis, VIP 1">
+            </div>
+            <button id="submitOrderBtn" class="btn-order"><i class="fas fa-receipt"></i> VALIDER MA COMMANDE</button>
+            <div id="orderFeedback" class="small-note" style="margin-top: 8px;"></div>
+        </div>
+    </div>
 
-            <h3>Boissons avec Alcool</h3>
-            <div class="drink-grid" id="alcohol-drinks">
-                <div class="drink-item">BEAUFORT</div>
-                <div class="drink-item">CASTEL</div>
-                <div class="drink-item">CLASS</div>
-                <div class="drink-item">HEINEKEN</div>
-                <div class="drink-item">LEGEND</div>
-                <div class="drink-item">MUTZIG</div>
+    <!-- Cadeau (enveloppe / présents) -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-gift"></i>
+            <h2>Cadeau</h2>
+        </div>
+        <div class="card-body">
+            <p>Votre présence est un trésor ! Choisissez votre type de cadeau :</p>
+            <div class="gift-options">
+                <button id="giftEnveloppe" class="gift-btn">📩 Enveloppe</button>
+                <button id="giftPresent" class="gift-btn">🎁 Présents</button>
+            </div>
+            <div id="giftChoiceMsg" class="small-note" style="margin-top: 5px;"></div>
+        </div>
+    </div>
+
+    <!-- Livre d'or -->
+    <div class="card guestbook">
+        <div class="card-header">
+            <i class="fas fa-book-open"></i>
+            <h2>Livre d'or</h2>
+        </div>
+        <div class="card-body">
+            <textarea id="guestMessage" rows="2" placeholder="Laissez un message pour les mariés... 😊"></textarea>
+            <button id="sendGuestbookBtn" class="btn-send"><i class="fas fa-paper-plane"></i> ENVOYER</button>
+        </div>
+    </div>
+
+    <!-- QR Code & infos -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-qrcode"></i>
+            <h2>Accès événement</h2>
+        </div>
+        <div class="card-body">
+            <div class="qr-section">
+                <i class="fas fa-qrcode" style="font-size: 3rem; color:#b47c44;"></i>
+                <p style="font-weight: 500; margin: 5px 0;">Votre QR Code personnel</p>
+                <div style="background: white; padding: 8px; border-radius: 16px; display: inline-block; width: 110px; margin: 5px auto;">
+                    <i class="fas fa-mobile-alt"></i> 🎟️ #MICHELLE27
+                </div>
+                <p class="small-note">Présentez ce QR Code à l'entrée (ou dites votre nom)</p>
+            </div>
+            <div style="margin-top: 12px; text-align: center;">
+                <i class="fab fa-whatsapp"></i> Informer <strong>Michelle</strong> par WhatsApp ?
+                <button id="whatsappNotifyBtn" style="background: #25D366; color:white; border:none; border-radius: 40px; padding: 5px 12px; margin-left: 8px; font-weight: bold;">INFORMER ICI</button>
             </div>
         </div>
-
-        <button type="submit" class="btn" id="submit-btn" style="margin-top:30px;">CONFIRMER</button>
-    </form>
-    <p id="success-msg" style="display:none; color: #c5a059; font-weight: bold;">C'est enregistré ! Merci.</p>
+    </div>
+    <footer>Michelle & Mike · 27.02.2026 · Black & Gold</footer>
 </div>
-    </section>
+<div id="toastMsg" class="toast-msg" style="display: none;"></div>
 
-    <section class="section">
-        <div class="card">
-            <h2>Cadeaux</h2>
-            <p>Votre présence est notre plus beau trésor. Si vous souhaitez nous gâter :</p>
-            <div class="choice-grid">
-                <div style="border: 1px solid var(--gold); padding: 10px;">Enveloppe</div>
-                <div style="border: 1px solid var(--gold); padding: 10px;">Présents</div>
-            </div>
-            <br><br>
-            <h2>Votre Accès QR</h2>
-            <div id="qr-code">
-                <img src="qrcode (13).png" alt="QR Code">
-            </div>
-            <button class="btn" onclick="window.print()">Télécharger l'invitation</button>
-        </div>
-    </section>
+<script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWyJKgpzjajwaIj7qJnYqe0mA1a5tnKok",
+        authDomain: "application-dan-93c76.firebaseapp.com",
+        projectId: "application-dan-93c76",
+        storageBucket: "application-dan-93c76.firebasestorage.app",
+        messagingSenderId: "320857345541",
+        appId: "1:320857345541:web:1179185b59e6539275966c"
+    };
 
-        // Ta configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBWyJKgpzjajwaIj7qJnYqe0mA1a5tnKok",
-            authDomain: "application-dan-93c76.firebaseapp.com",
-            projectId: "application-dan-93c76",
-            storageBucket: "application-dan-93c76.firebasestorage.app",
-            messagingSenderId: "320857345541",
-            appId: "1:320857345541:web:1179185b59e6539275966c"
-        };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-        // Initialisation
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    // -------- Données statiques boissons ----------
+    const softDrinks = ["COCA", "ENERGY MALT", "FANTA", "MALTINA", "SPRITE", "TONIC", "VITALO"];
+    const alcoholDrinks = ["BEAUFORT", "CASTEL", "CLASS", "HEINEKEN", "LEGEND", "MUTZIG"];
 
-        // Gestion du Formulaire RSVP
-        const rsvpForm = document.getElementById('rsvp-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const successMsg = document.getElementById('success-msg');
+    let selectedDrinks = new Set(); // stocke les noms de boissons sélectionnées
 
-        rsvpForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            submitBtn.innerText = "Envoi en cours...";
-            submitBtn.disabled = true;
+    // Helper toast
+    function showToast(message, duration = 3000) {
+        const toast = document.getElementById('toastMsg');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, duration);
+    }
 
-            const name = document.getElementById('guest-name').value;
-            const status = document.getElementById('guest-status').value;
-            const drink = document.getElementById('guest-drink').value;
+    // Render boissons
+    function renderDrinks() {
+        const softContainer = document.getElementById('softDrinksContainer');
+        const alcoholContainer = document.getElementById('alcoholDrinksContainer');
+        softContainer.innerHTML = '';
+        alcoholContainer.innerHTML = '';
 
-            try {
-                await addDoc(collection(db, "confirmations"), {
-                    nom: name,
-                    statut: status,
-                    boisson: drink,
-                    date: new Error().toISOString()
-                });
-                
-                rsvpForm.style.display = 'none';
-                successMsg.style.display = 'block';
-            } catch (error) {
-                console.error("Erreur lors de l'envoi: ", error);
-                alert("Erreur. Veuillez réessayer.");
-                submitBtn.innerText = "Confirmer";
-                submitBtn.disabled = false;
+        softDrinks.forEach(drink => {
+            const chip = document.createElement('div');
+            chip.className = `drink-chip ${selectedDrinks.has(drink) ? 'selected' : ''}`;
+            chip.textContent = drink;
+            chip.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (selectedDrinks.has(drink)) {
+                    selectedDrinks.delete(drink);
+                } else {
+                    selectedDrinks.add(drink);
+                }
+                renderDrinks();
+            });
+            softContainer.appendChild(chip);
+        });
+
+        alcoholDrinks.forEach(drink => {
+            const chip = document.createElement('div');
+            chip.className = `drink-chip ${selectedDrinks.has(drink) ? 'selected' : ''}`;
+            chip.textContent = drink;
+            chip.addEventListener('click', (e) => {
+                if (selectedDrinks.has(drink)) {
+                    selectedDrinks.delete(drink);
+                } else {
+                    selectedDrinks.add(drink);
+                }
+                renderDrinks();
+            });
+            alcoholContainer.appendChild(chip);
+        });
+    }
+
+    // RSVP 
+    let currentRsvpStatus = false;
+    async function loadRsvpStatus() {
+        try {
+            const rsvpRef = doc(db, "wedding", "globalRsvp");
+            const docSnap = await getDoc(rsvpRef);
+            if (docSnap.exists()) {
+                // on suppose un compteur ou user anon? on utilise localStorage pour ce user simple
+                const localConfirmed = localStorage.getItem('michelleweds_rsvp');
+                if (localConfirmed === 'true') {
+                    currentRsvpStatus = true;
+                    document.getElementById('rsvpStatus').innerHTML = '✅ Vous avez confirmé votre présence ! Merci 💛';
+                    document.getElementById('confirmRsvpBtn').disabled = true;
+                    document.getElementById('confirmRsvpBtn').style.opacity = '0.6';
+                } else {
+                    currentRsvpStatus = false;
+                    document.getElementById('rsvpStatus').innerHTML = '❌ Vous n\'avez pas encore confirmé.';
+                }
+            } else {
+                await setDoc(rsvpRef, { totalConfirmed: 0 });
             }
-            // --- Logique de sélection des boissons ---
-let selectedDrink = "";
-const drinkItems = document.querySelectorAll('.drink-item');
-
-drinkItems.forEach(item => {
-    item.addEventListener('click', () => {
-        // Retirer la sélection des autres
-        drinkItems.forEach(i => i.classList.remove('selected'));
-        // Ajouter à l'élément cliqué
-        item.classList.add('selected');
-        selectedDrink = item.innerText;
-    });
-});
-
-// --- Modification de la fonction d'envoi ---
-const rsvpForm = document.getElementById('rsvp-form');
-
-rsvpForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    if(!selectedDrink) {
-        alert("Veuillez suggérer une boisson SVP !");
-        return;
+        } catch(e) { console.warn(e); }
     }
 
-    const name = document.getElementById('guest-name').value;
-    const submitBtn = document.getElementById('submit-btn');
-
-    submitBtn.innerText = "CHARGEMENT...";
-    submitBtn.disabled = true;
-
-    try {
-        await addDoc(collection(db, "confirmations"), {
-            nom: name,
-            boisson_preferee: selectedDrink,
-            date_inscription: new Date().toLocaleString()
-        });
-        
-        document.getElementById('rsvp-form').style.display = 'none';
-        document.getElementById('success-msg').style.display = 'block';
-    } catch (error) {
-        console.error("Erreur:", error);
-        alert("Erreur lors de l'envoi.");
-        submitBtn.disabled = false;
+    async function confirmRsvp() {
+        if (currentRsvpStatus) {
+            showToast("Vous avez déjà confirmé votre présence !");
+            return;
+        }
+        try {
+            const rsvpRef = doc(db, "wedding", "globalRsvp");
+            await updateDoc(rsvpRef, {
+                totalConfirmed: (await getDoc(rsvpRef)).data()?.totalConfirmed + 1 || 1,
+                lastConfirm: serverTimestamp()
+            });
+            // enregistrer dans le localStorage et collection guests RSVP
+            await addDoc(collection(db, "rsvpGuests"), {
+                timestamp: serverTimestamp(),
+                guestId: "visiteur_" + new Date().getTime(),
+                confirmed: true
+            });
+            localStorage.setItem('michelleweds_rsvp', 'true');
+            currentRsvpStatus = true;
+            document.getElementById('rsvpStatus').innerHTML = '✅ Vous avez confirmé votre présence ! Merci 💛';
+            const btn = document.getElementById('confirmRsvpBtn');
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            showToast("Félicitations ! Votre présence a été confirmée ✅");
+        } catch(error) {
+            console.error(error);
+            showToast("Erreur lors de la confirmation, réessayez.");
+        }
     }
-    });
+
+    // Commande boisson + table -> admin voit les détails
+    async function submitOrder() {
+        const tableName = document.getElementById('tableNameInput').value.trim();
+        if (!tableName) {
+            showToast("Veuillez indiquer un numéro / nom de table");
+            return;
+        }
+        if (selectedDrinks.size === 0) {
+            showToast("Sélectionnez au moins une boisson 😊");
+            return;
+        }
+        const orderArray = Array.from(selectedDrinks);
+        try {
+            await addDoc(collection(db, "drinkOrders"), {
+                table: tableName,
+                drinks: orderArray,
+                timestamp: serverTimestamp(),
+                status: "nouvelle",
+                guestInfo: "invité via web"
+            });
+            showToast(`✅ Commande envoyée ! ${orderArray.length} boisson(s) pour la table ${tableName}. Merci !`);
+            document.getElementById('orderFeedback').innerHTML = `✔ Commande enregistrée pour la table ${tableName}`;
+            // Option : reset selected ? on peut garder mais pour UX on reset les boissons
+            selectedDrinks.clear();
+            renderDrinks();
+            document.getElementById('tableNameInput').value = '';
+            setTimeout(() => {
+                document.getElementById('orderFeedback').innerHTML = '';
+            }, 3000);
+        } catch(e) {
+            showToast("Erreur d'envoi de commande");
+            console.error(e);
+        }
+    }
+
+    // Livre d'or
+    async function sendGuestbookMessage() {
+        const message = document.getElementById('guestMessage').value.trim();
+        if (!message) {
+            showToast("Écrivez un petit mot dans le livre d'or !");
+            return;
+        }
+        try {
+            await addDoc(collection(db, "guestbook"), {
+                message: message,
+                timestamp: serverTimestamp(),
+                dateStr: new Date().toLocaleString()
+            });
+            showToast("✨ Votre message a été ajouté au livre d'or. Merci !");
+            document.getElementById('guestMessage').value = '';
+        } catch(e) {
+            showToast("Erreur lors de l'envoi");
+        }
+    }
+
+    // Gestion cadeau
+    let giftType = null;
+    function updateGiftUI() {
+        if (giftType === 'enveloppe') {
+            document.getElementById('giftChoiceMsg').innerHTML = '💌 Vous avez choisi Enveloppe. Merci pour votre générosité !';
+        } else if (giftType === 'present') {
+            document.getElementById('giftChoiceMsg').innerHTML = '🎁 Vous avez choisi un présent. Liste de mariage disponible sur demande.';
+        } else {
+            document.getElementById('giftChoiceMsg').innerHTML = '';
+        }
+        // sauvegarde firebase optionnelle (tracking cadeau)
+        if(giftType){
+            addDoc(collection(db, "giftPreferences"), {
+                choice: giftType,
+                timestamp: serverTimestamp()
+            }).catch(e=>console.warn);
+        }
+    }
+
+    // whatsapp notify
+    function whatsappNotify() {
+        const phone = "243000000000"; // placeholder Michelle
+        const message = "Bonjour Michelle, je confirme ma participation et j'ai utilisé l'application web. À bientôt !";
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        showToast("Redirection vers WhatsApp ...");
+    }
+
+    // initialisation UI events
+    function bindEvents() {
+        document.getElementById('confirmRsvpBtn').addEventListener('click', confirmRsvp);
+        document.getElementById('submitOrderBtn').addEventListener('click', submitOrder);
+        document.getElementById('sendGuestbookBtn').addEventListener('click', sendGuestbookMessage);
+        document.getElementById('giftEnveloppe').addEventListener('click', () => {
+            giftType = 'enveloppe';
+            updateGiftUI();
         });
-    </script>
+        document.getElementById('giftPresent').addEventListener('click', () => {
+            giftType = 'present';
+            updateGiftUI();
+        });
+        document.getElementById('whatsappNotifyBtn').addEventListener('click', whatsappNotify);
+    }
+
+    // Admin overview: en plus pour que l'admin voit les commandes détaillées, nous créons une console (visible par admin dans firebase console)
+    // Optionnel: affichage dans l'app simple pour admin ? pour le professionnalisme, on peut ajouter un toggle mais reste propre.
+    // On va ajouter une zone cachée? non mais l'admin se connecte à Firebase console et voit collections "drinkOrders" avec tous les détails (table, boissons)
+    // Nous pouvons ajouter un petit indicateur "admin" si besoin mais parfait.
+
+    // Création éventuelle d'un doc pour stocker les lieux / maps simplifiés (déjà dans invitation)
+    async function initializeDatabase() {
+        try {
+            const configRef = doc(db, "metadata", "appConfig");
+            const snap = await getDoc(configRef);
+            if (!snap.exists()) {
+                await setDoc(configRef, { created: serverTimestamp(), event: "Mariage Michelle & Mike" });
+            }
+        } catch(e) {}
+    }
+
+    renderDrinks();
+    loadRsvpStatus();
+    bindEvents();
+    initializeDatabase();
+
+    // Bonus: gestion du placeholder map / Mango etc -> affichage des lieux (informations)
+    // Ajouter un élément de style "lieux à proximité" inspiré des screens: Mango, Le Cactus Resto etc
+    const placeCard = document.createElement('div');
+    placeCard.className = 'card';
+    placeCard.innerHTML = `
+        <div class="card-header">
+            <i class="fas fa-map-marker-alt"></i>
+            <h2>À proximité</h2>
+        </div>
+        <div class="card-body">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.8rem;">
+                <span>📍 Mango</span> <span>📍 Le Cactus Resto</span> <span>📍 JAMROCK BAR</span> <span>📍 La Maison Hobah</span>
+                <span>📍 Grand chapiteau GB</span> <span>📍 Palais</span> <span>📍 Kaliyana</span>
+            </div>
+            <p class="small-note" style="margin-top: 8px;"><i class="fas fa-map"></i> Ouvrir dans Maps : réception au Grand chapiteau GB</p>
+            <button id="openMapsBtn" style="background:#e9d6b0; border:none; border-radius:30px; padding:6px 12px; margin-top:8px;"><i class="fab fa-google"></i> Ouvrir dans Maps</button>
+        </div>
+    `;
+    const container = document.querySelector('.app-container');
+    const footer = document.querySelector('footer');
+    container.insertBefore(placeCard, footer);
+    document.getElementById('openMapsBtn')?.addEventListener('click', () => {
+        window.open('https://maps.google.com/?q=Grand+chapiteau+GB+Kinshasa+Ngaliema', '_blank');
+    });
+    // Ajout event QR code ou notification
+    showToast("Bienvenue sur l'application de Michelle & Mike ✨");
+</script>
 </body>
 </html>
