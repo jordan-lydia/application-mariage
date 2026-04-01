@@ -11,6 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -20,12 +22,13 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #0a0806;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Fond principal - plus lumineux pour mieux voir la photo */
+        /* Hero Background */
         .wedding-bg {
             position: fixed;
             top: 0;
@@ -35,10 +38,10 @@
             background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 100%), url('dan.jpeg');
             background-size: cover;
             background-position: center 30%;
+            background-attachment: fixed;
             z-index: -2;
         }
 
-        /* Overlay plus léger pour préserver la visibilité de la photo */
         .wedding-bg::after {
             content: '';
             position: absolute;
@@ -46,7 +49,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(255,215,0,0.05) 0%, rgba(0,0,0,0.15) 100%);
+            background: radial-gradient(circle at center, rgba(255,215,0,0.05) 0%, rgba(0,0,0,0.2) 100%);
             pointer-events: none;
         }
 
@@ -59,7 +62,7 @@
             z-index: 2;
         }
 
-        /* Navigation plus élégante avec meilleur contraste */
+        /* Navigation */
         .nav-simple {
             display: flex;
             background: rgba(0,0,0,0.55);
@@ -102,7 +105,7 @@
             to { opacity: 1; transform: translateY(0) scale(1); } 
         }
 
-        /* Cartes plus transparentes pour laisser voir la photo */
+        /* Glass Cards */
         .glass-card {
             background: rgba(0,0,0,0.45);
             backdrop-filter: blur(20px);
@@ -119,45 +122,150 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.35);
         }
 
-        /* Page d'accueil - complètement transparent pour voir les mariés */
+        /* Welcome Card - Version améliorée */
         .welcome-card {
             text-align: center;
-            padding: 40px 24px;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(12px);
+            padding: 35px 24px;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(212,175,55,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         
         .couple-name { 
-            font-family: 'Georgia', serif; 
-            font-size: 2.5rem; 
+            font-family: 'Cormorant Garamond', serif; 
+            font-size: 2.8rem; 
             color: #FFF9EF;
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
-            letter-spacing: 1.5px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
         }
         .couple-name span { 
             color: #F3CD65; 
-            font-size: 2.8rem;
-            text-shadow: 0 0 20px rgba(243,205,101,0.6);
+            font-size: 3.2rem;
+            text-shadow: 0 0 25px rgba(243,205,101,0.7);
+            display: inline-block;
+            animation: gentleGlow 2.5s ease-in-out infinite;
+        }
+
+        @keyframes gentleGlow {
+            0%, 100% { text-shadow: 0 0 15px rgba(243,205,101,0.4); }
+            50% { text-shadow: 0 0 30px rgba(243,205,101,0.8); }
         }
         
-        .welcome-message {
+        .wedding-date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
             background: rgba(212,175,55,0.2);
             backdrop-filter: blur(8px);
             border-radius: 50px;
-            padding: 12px 24px;
+            padding: 8px 20px;
+            margin: 15px auto;
+            width: fit-content;
+            border: 1px solid rgba(212,175,55,0.4);
+        }
+
+        .wedding-date-badge i {
+            color: #F3CD65;
+            font-size: 0.9rem;
+        }
+
+        .wedding-date-badge span {
+            color: #FFF5E8;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .welcome-message {
+            background: rgba(212,175,55,0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            padding: 10px 20px;
             display: inline-block;
-            margin: 20px auto;
+            margin: 15px auto;
             border: 1px solid rgba(212,175,55,0.4);
         }
         
-        .welcome-message span {
+        .welcome-message p {
             color: #FFF5E8;
             font-weight: 500;
             letter-spacing: 0.5px;
+            font-size: 1rem;
+        }
+        
+        .welcome-message i {
+            color: #F3CD65;
+            margin: 0 6px;
         }
 
-        /* Stats Dashboard améliorées avec meilleur contraste */
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #FFEFD0;
+            margin: 20px 0;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-text i {
+            color: #F3CD65;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Countdown */
+        .countdown-mini {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 60px;
+            backdrop-filter: blur(8px);
+        }
+
+        .countdown-item-mini {
+            text-align: center;
+        }
+
+        .countdown-number-mini {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #F3CD65;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .countdown-label-mini {
+            font-size: 0.6rem;
+            color: rgba(255,245,232,0.7);
+            text-transform: uppercase;
+        }
+
+        /* Stats Dashboard */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -198,7 +306,7 @@
         }
         canvas { max-height: 200px; width: 100%; }
 
-        /* Commandes avec meilleure lisibilité */
+        /* Orders */
         .orders-list, .history-list {
             max-height: 400px;
             overflow-y: auto;
@@ -307,7 +415,7 @@
         .btn-prepare { background: #3498DB; color: white; }
         .btn-serve { background: #2ECC71; color: white; }
 
-        /* Stock Management - meilleur contraste */
+        /* Stock Management */
         .stock-header {
             display: flex;
             justify-content: space-between;
@@ -340,7 +448,7 @@
         .stock-quantity { font-weight: bold; color: #F3CD65; font-size: 1.2rem; }
         .stock-consumed { font-size: 0.8rem; color: #F39C12; }
 
-        /* Tables scroll */
+        /* Tables */
         .table-scroll {
             overflow-x: auto;
             white-space: nowrap;
@@ -370,7 +478,7 @@
             font-weight: bold;
         }
 
-        /* Menu catégories - plus visible */
+        /* Menu Categories */
         .menu-categories {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -393,7 +501,7 @@
         .menu-cat.active-menu { background: linear-gradient(135deg, #F3CD65, #D4A837); border-color: transparent; }
         .menu-cat.active-menu i, .menu-cat.active-menu span { color: #1E120C; }
 
-        /* Liste des boissons - meilleure lisibilité */
+        /* Drinks List */
         .drinks-list { max-height: 280px; overflow-y: auto; }
         .drink-item {
             background: rgba(0,0,0,0.5);
@@ -428,7 +536,7 @@
         }
         .drink-item:hover .drink-add { transform: scale(1.1); }
 
-        /* Panier - plus contrasté */
+        /* Cart */
         .cart-preview {
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(12px);
@@ -575,15 +683,16 @@
             color: #FFF0D8;
             border: 1px solid rgba(212,175,55,0.3);
         }
-        
-        /* Badge de notification */
-        .notification-badge {
-            position: relative;
-        }
 
-        /* Texte global amélioré */
         h3, h4, p {
             color: #FFF0D8;
+        }
+
+        @media (max-width: 480px) {
+            .couple-name { font-size: 2rem; }
+            .couple-name span { font-size: 2.3rem; }
+            .quote-text { font-size: 0.9rem; }
+            .countdown-number-mini { font-size: 1rem; }
         }
     </style>
 </head>
@@ -596,19 +705,27 @@
         <button class="nav-btn" data-page="admin"><i class="fas fa-chart-line"></i> Gestion</button>
     </div>
 
-    <!-- ACCUEIL - Cadre transparent pour voir la photo des mariés -->
+    <!-- ACCUEIL - Version Professionnelle -->
     <div id="homePage" class="page active-page">
         <div class="glass-card welcome-card">
             <div class="couple-name">DAN <span>&</span> TINA</div>
+            
+
+            
             <div class="welcome-message">
-                <i class="fas fa-heart" style="color:#F3CD65;"></i>
-                <span style="margin: 0 8px;">Bienvenue à notre mariage</span>
-                <i class="fas fa-heart" style="color:#F3CD65;"></i>
+                <i class="fas fa-heart"></i>
+                <p>Bienvenue à notre mariage</p>
+                <i class="fas fa-heart"></i>
             </div>
-            <p style="color: #FFEFD0; font-size: 0.95rem; margin: 15px 0; opacity: 0.95; font-weight: 500;">
-                "Merci d'être parmi nous pour célébrer ce jour unique"
-            </p>
-            <button class="btn-gold" id="startOrderBtn"><i class="fas fa-champagne-glasses"></i> Commander une boisson</button>
+            
+            <div class="quote-text">
+                <i class="fas fa-quote-left"></i>
+                Merci d'être parmi nous pour célébrer ce jour unique
+                <i class="fas fa-quote-right"></i>
+            </div>
+            </div>
+            
+            <button class="btn-gold" id="startOrderBtn"><i class="fas fa-champagne-glasses"></i> Commander une boisson <i class="fas fa-arrow-right"></i></button>
         </div>
         <footer>Dan & Tina · 1er Avril 2026</footer>
     </div>
@@ -655,7 +772,6 @@
                     <div class="subtab" data-subtab="history">📜 Historique</div>
                 </div>
 
-                <!-- ONGLET COMMANDES EN TEMPS RÉEL -->
                 <div id="ordersTab" class="subtab-content">
                     <div class="order-stats">
                         <span class="stat-badge"><i class="fas fa-clock"></i> En attente: <strong id="pendingCount">0</strong></span>
@@ -665,7 +781,6 @@
                     <div id="liveOrdersList" class="orders-list"></div>
                 </div>
 
-                <!-- STATISTIQUES -->
                 <div id="statsTab" class="subtab-content" style="display:none;">
                     <div class="stats-grid">
                         <div class="stat-card"><div class="stat-number" id="totalOrders">0</div><div class="stat-label">Commandes</div></div>
@@ -675,7 +790,6 @@
                     <div class="chart-container"><canvas id="topDrinksChart"></canvas></div>
                 </div>
 
-                <!-- STOCK -->
                 <div id="stockTab" class="subtab-content" style="display:none;">
                     <div class="stock-header">
                         <h4 style="color:#F3CD65;"><i class="fas fa-boxes"></i> Gestion du stock</h4>
@@ -684,7 +798,6 @@
                     <div id="stockList" class="orders-list"></div>
                 </div>
 
-                <!-- GESTION PRODUITS -->
                 <div id="productsTab" class="subtab-content" style="display:none;">
                     <div class="stock-header">
                         <h4 style="color:#F3CD65;"><i class="fas fa-edit"></i> Catalogue des boissons</h4>
@@ -693,7 +806,6 @@
                     <div id="productsManageList" class="orders-list"></div>
                 </div>
 
-                <!-- HISTORIQUE -->
                 <div id="historyTab" class="subtab-content" style="display:none;">
                     <h4 style="color:#F3CD65; margin-bottom:10px;"><i class="fas fa-history"></i> Historique complet</h4>
                     <div id="historyList" class="orders-list"></div>
@@ -717,7 +829,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // MENU PAR DÉFAUT
     const DEFAULT_DRINKS = {
         alcool: [{ name: "Primus", brand: "Bralima" }, { name: "Mutzig", brand: "Brasimba" }, { name: "Turbo King", brand: "Bralima" }, { name: "Beaufort", brand: "Brasimba" }, { name: "Castel", brand: "Castel" }, { name: "Heineken", brand: "Heineken" }, { name: "Legend", brand: "Bralima" }, { name: "Class", brand: "Bralima" }, { name: "Skol", brand: "Bralima" }, { name: "DOGGO", brand: "Brasimba" }],
         sucree: [{ name: "Coca-Cola", brand: "Bralima" }, { name: "Fanta Orange", brand: "Bralima" }, { name: "Fanta Citron", brand: "Bralima" }, { name: "Sprite", brand: "Bralima" }, { name: "Maltina", brand: "Nestlé" }, { name: "Energy Malt", brand: "Bralima" }, { name: "Vitalo", brand: "Brasimba" }, { name: "Tonic", brand: "Schweppes" }, { name: "Jus d'Orange", brand: "Fruitex" }, { name: "Jus de Mangue", brand: "Fruitex" }],
@@ -729,6 +840,32 @@
     let currentMenu = "alcool", currentTable = 1, cart = [], adminLogged = false;
     let topDrinksChart = null;
     const ADMIN_PASS = "dantina2026";
+    let countdownInterval;
+
+    // Compteur pour la page d'accueil
+    function updateHomeCountdown() {
+        const weddingDate = new Date(2026, 3, 1, 0, 0, 0);
+        const now = new Date();
+        const diff = weddingDate - now;
+        
+        if (diff <= 0) {
+            document.getElementById('homeDays').textContent = '00';
+            document.getElementById('homeHours').textContent = '00';
+            document.getElementById('homeMinutes').textContent = '00';
+            document.getElementById('homeSeconds').textContent = '00';
+            return;
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        document.getElementById('homeDays').textContent = days.toString().padStart(2, '0');
+        document.getElementById('homeHours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('homeMinutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('homeSeconds').textContent = seconds.toString().padStart(2, '0');
+    }
 
     function genTables() {
         const container = document.getElementById('tableButtons');
@@ -829,7 +966,7 @@
                             <span class="order-status status-${status}">${status === 'pending' ? '⏳ En attente' : status === 'confirmed' ? '🍳 En préparation' : '✅ Servi'}</span>
                         </div>
                         <div class="order-items">
-                            ${order.items.map(i => `<span class="badge" style="background:rgba(212,175,55,0.25); padding:2px 8px; border-radius:15px; margin-right:5px;">${i.name} x${i.quantity}</span>`).join('')}
+                            ${order.items.map(i => `<span style="background:rgba(212,175,55,0.25); padding:2px 8px; border-radius:15px; margin-right:5px; display:inline-block;">${i.name} x${i.quantity}</span>`).join('')}
                         </div>
                         <div class="order-actions">
                             ${status === 'pending' ? `<button class="order-btn btn-prepare" data-id="${doc.id}"><i class="fas fa-utensils"></i> Préparer</button>` : ''}
@@ -1041,6 +1178,11 @@
                 for(let d of DEFAULT_DRINKS[cat]) await db.collection('drinks').add({ ...d, category: cat });
             }
         }
+        
+        // Démarrer le compteur
+        updateHomeCountdown();
+        countdownInterval = setInterval(updateHomeCountdown, 1000);
+        
         showToast("🥂 Bienvenue au mariage de Dan & Tina !", 2000);
     });
 </script>
