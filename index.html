@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Dan & Tina | Bar Mariage - Gestion & Statistiques</title>
+    <title>Dan & Tina | Bar Mariage - Gestion Professionnelle</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -31,7 +31,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(40,25,15,0.8) 100%), url('dan.jpeg');
+            background: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(40,25,15,0.85) 100%), url('dan.jpeg');
             background-size: cover;
             background-position: center 30%;
             z-index: -2;
@@ -46,6 +46,7 @@
             z-index: 2;
         }
 
+        /* Navigation */
         .nav-simple {
             display: flex;
             background: rgba(0,0,0,0.55);
@@ -61,15 +62,16 @@
             text-align: center;
             padding: 10px 0;
             border-radius: 50px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             color: #FFE8D6;
             background: transparent;
             border: none;
+            transition: all 0.2s;
         }
 
-        .nav-btn i { margin-right: 5px; }
+        .nav-btn i { margin-right: 6px; }
         .nav-btn.active { background: #D4AF37; color: #2C1810; }
 
         .page { display: none; animation: fadeIn 0.3s ease; }
@@ -89,7 +91,12 @@
             text-align: center;
             padding: 40px 20px;
         }
-        .couple-name { font-family: 'Georgia', serif; font-size: 2rem; color: #FFE8C7; }
+        
+        .couple-name { 
+            font-family: 'Georgia', serif; 
+            font-size: 2rem; 
+            color: #FFE8C7; 
+        }
         .couple-name span { color: #D4AF37; font-size: 2.3rem; }
 
         /* Stats Dashboard */
@@ -117,24 +124,73 @@
         }
         canvas { max-height: 200px; width: 100%; }
 
-        /* Historique */
-        .history-list {
-            max-height: 300px;
+        /* Historique et commandes */
+        .orders-list, .history-list {
+            max-height: 400px;
             overflow-y: auto;
         }
-        .history-item {
+        
+        .order-card {
             background: rgba(255,255,240,0.08);
             padding: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border-radius: 16px;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .order-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            margin-bottom: 8px;
         }
-        .history-detail { flex: 1; }
-        .history-name { font-weight: bold; color: #FFE8C7; }
-        .history-meta { font-size: 0.7rem; color: #D4AF37; margin-top: 4px; }
+        
+        .order-table {
+            font-weight: bold;
+            color: #D4AF37;
+            font-size: 1rem;
+        }
+        
+        .order-time {
+            font-size: 0.7rem;
+            color: #aa9f84;
+        }
+        
+        .order-items {
+            font-size: 0.85rem;
+            color: #FFE8C7;
+            margin: 8px 0;
+        }
+        
+        .order-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .status-pending { background: #e67e22; color: white; }
+        .status-confirmed { background: #3498db; color: white; }
+        .status-served { background: #27ae60; color: white; }
+        
+        .order-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .order-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .btn-prepare { background: #3498db; color: white; }
+        .btn-serve { background: #27ae60; color: white; }
 
         /* Stock Management */
         .stock-header {
@@ -145,25 +201,21 @@
             flex-wrap: wrap;
             gap: 10px;
         }
+        
         .stock-item {
             background: rgba(0,0,0,0.5);
             border-radius: 16px;
             padding: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        
         .stock-info h4 { color: #FFE8C7; font-size: 0.95rem; }
         .stock-info p { font-size: 0.7rem; color: #D4AF37; }
-        .stock-quantity { font-weight: bold; color: #D4AF37; font-size: 1.2rem; margin: 0 15px; }
-        .stock-actions button {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-            padding: 5px 8px;
-        }
+        .stock-quantity { font-weight: bold; color: #D4AF37; font-size: 1.2rem; }
+        .stock-consumed { font-size: 0.8rem; color: #e67e22; }
 
         /* Tables scroll */
         .table-scroll {
@@ -181,9 +233,11 @@
             cursor: pointer;
             display: inline-block;
             color: #FFE8C7;
+            transition: all 0.2s;
         }
         .table-btn.active-table { background: #D4AF37; color: #2C1810; }
 
+        /* Menu catégories */
         .menu-categories {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -196,12 +250,14 @@
             padding: 10px 4px;
             border-radius: 16px;
             cursor: pointer;
+            transition: all 0.2s;
         }
         .menu-cat i { color: #D4AF37; font-size: 1.1rem; display: block; }
         .menu-cat span { font-size: 0.65rem; color: #FFE8C7; }
         .menu-cat.active-menu { background: #D4AF37; }
         .menu-cat.active-menu i, .menu-cat.active-menu span { color: #2C1810; }
 
+        /* Liste des boissons */
         .drinks-list { max-height: 280px; overflow-y: auto; }
         .drink-item {
             background: rgba(255,255,240,0.08);
@@ -210,13 +266,31 @@
             border-radius: 16px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        .drink-item:active { transform: scale(0.98); }
+        
+        .drink-info { flex: 1; }
+        .drink-name { font-weight: bold; color: #FFE8C7; }
+        .drink-brand { font-size: 0.7rem; color: #D4AF37; margin-top: 2px; }
+        .drink-add { background: #D4AF37; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2C1810; }
+
+        /* Panier */
         .cart-preview {
             background: rgba(0,0,0,0.6);
             border-radius: 20px;
             padding: 12px;
             margin-top: 12px;
+        }
+        .cart-title { color: #D4AF37; font-weight: bold; margin-bottom: 10px; }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(212,175,55,0.2);
         }
         .btn-gold {
             background: #D4AF37;
@@ -227,7 +301,11 @@
             font-weight: bold;
             margin-top: 10px;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        .btn-gold:active { transform: scale(0.98); }
+
+        /* Modals */
         .modal {
             position: fixed;
             top: 0;
@@ -257,18 +335,26 @@
             border-radius: 30px;
             color: white;
         }
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #D4AF37;
-            color: #2C1810;
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            z-index: 1000;
+        
+        /* Tabs */
+        .tab-subnav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(212,175,55,0.3);
+            padding-bottom: 10px;
+            flex-wrap: wrap;
         }
+        .subtab {
+            padding: 6px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #FFE8C7;
+            transition: all 0.2s;
+        }
+        .subtab.active-sub { background: #D4AF37; color: #2C1810; }
+        
         .login-box { text-align: center; padding: 20px; }
         .login-box input {
             width: 100%;
@@ -278,23 +364,46 @@
             border-radius: 40px;
             color: white;
             margin: 10px 0;
+            text-align: center;
         }
-        .tab-subnav {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(212,175,55,0.3);
-            padding-bottom: 10px;
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D4AF37;
+            color: #2C1810;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            z-index: 1000;
+            white-space: nowrap;
         }
-        .subtab {
-            padding: 6px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: #FFE8C7;
-        }
-        .subtab.active-sub { background: #D4AF37; color: #2C1810; }
+        
         footer { text-align: center; padding: 16px; font-size: 0.7rem; color: #aa9f84; }
+        
+        .badge {
+            background: #D4AF37;
+            color: #2C1810;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .order-stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-badge {
+            background: rgba(212,175,55,0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
     </style>
 </head>
 <body>
@@ -310,8 +419,11 @@
     <div id="homePage" class="page active-page">
         <div class="glass-card welcome-card">
             <div class="couple-name">DAN <span>&</span> TINA</div>
-            <div style="margin: 20px 0; color:#FFE8C7;">Bienvenue à notre mariage</div>
-            <button class="btn-gold" id="startOrderBtn"><i class="fas fa-champagne-glasses"></i> Commander</button>
+            <div style="margin: 20px 0; color:#FFE8C7;">
+                <i class="fas fa-heart" style="color:#D4AF37;"></i> Bienvenue à notre mariage<br>
+                "Merci d'être parmi nous pour ce jour unique"
+            </div>
+            <button class="btn-gold" id="startOrderBtn"><i class="fas fa-champagne-glasses"></i> Commander une boisson</button>
         </div>
         <footer>Dan & Tina · 1er Avril 2026</footer>
     </div>
@@ -332,57 +444,74 @@
             <div class="drinks-list" id="drinksList"></div>
             <div class="cart-preview">
                 <div class="cart-title"><i class="fas fa-shopping-basket"></i> Ma commande</div>
-                <div id="cartItems">Aucune boisson</div>
+                <div id="cartItems" class="cart-items"></div>
                 <button id="confirmOrderBtn" class="btn-gold"><i class="fas fa-check"></i> Confirmer</button>
             </div>
         </div>
     </div>
 
-    <!-- GESTION (Admin) -->
+    <!-- GESTION ADMIN -->
     <div id="adminPage" class="page">
         <div class="glass-card">
             <div id="adminLoginArea">
                 <div class="login-box">
                     <i class="fas fa-lock" style="font-size: 2rem; color:#D4AF37;"></i>
+                    <h3 style="color:#FFE8C7;">Espace Gestionnaire</h3>
                     <input type="password" id="adminPassword" placeholder="Mot de passe">
                     <button id="loginBtn" class="btn-gold">Accéder</button>
                 </div>
             </div>
             <div id="adminDashboardArea" style="display:none;">
-                <!-- Sous-navigation Gestion -->
                 <div class="tab-subnav">
-                    <div class="subtab active-sub" data-subtab="stats">📊 Stats & Stock</div>
+                    <div class="subtab active-sub" data-subtab="orders">📋 Commandes</div>
+                    <div class="subtab" data-subtab="stats">📊 Statistiques</div>
+                    <div class="subtab" data-subtab="stock">📦 Stock</div>
+                    <div class="subtab" data-subtab="products">🍾 Produits</div>
                     <div class="subtab" data-subtab="history">📜 Historique</div>
-                    <div class="subtab" data-subtab="products">🍾 Gestion produits</div>
                 </div>
 
-                <!-- STATISTIQUES & STOCK -->
-                <div id="statsTab" class="subtab-content">
+                <!-- ONGLET COMMANDES EN TEMPS RÉEL -->
+                <div id="ordersTab" class="subtab-content">
+                    <div class="order-stats">
+                        <span class="stat-badge"><i class="fas fa-clock"></i> En attente: <span id="pendingCount">0</span></span>
+                        <span class="stat-badge"><i class="fas fa-spinner"></i> En préparation: <span id="confirmedCount">0</span></span>
+                        <span class="stat-badge"><i class="fas fa-check"></i> Servies: <span id="servedCount">0</span></span>
+                    </div>
+                    <div id="liveOrdersList" class="orders-list"></div>
+                </div>
+
+                <!-- STATISTIQUES -->
+                <div id="statsTab" class="subtab-content" style="display:none;">
                     <div class="stats-grid">
                         <div class="stat-card"><div class="stat-number" id="totalOrders">0</div><div class="stat-label">Commandes</div></div>
                         <div class="stat-card"><div class="stat-number" id="totalDrinks">0</div><div class="stat-label">Boissons servies</div></div>
                         <div class="stat-card"><div class="stat-number" id="tablesServed">0</div><div class="stat-label">Tables servies</div></div>
                     </div>
                     <div class="chart-container"><canvas id="topDrinksChart"></canvas></div>
-                    
-                    <h4 style="color:#D4AF37; margin:15px 0 10px;"><i class="fas fa-boxes"></i> Stock initial & Suivi</h4>
-                    <div id="stockList" class="history-list" style="max-height: 250px;"></div>
-                    <button id="initStockBtn" class="btn-gold" style="margin-top:10px; background:#2c5e2e;"><i class="fas fa-database"></i> Initialiser / Réinitialiser le stock</button>
                 </div>
 
-                <!-- HISTORIQUE EN TEMPS RÉEL -->
-                <div id="historyTab" class="subtab-content" style="display:none;">
-                    <h4 style="color:#D4AF37; margin-bottom:10px;"><i class="fas fa-clock"></i> Historique des commandes</h4>
-                    <div id="historyList" class="history-list" style="max-height: 400px;"></div>
+                <!-- STOCK -->
+                <div id="stockTab" class="subtab-content" style="display:none;">
+                    <div class="stock-header">
+                        <h4 style="color:#D4AF37;"><i class="fas fa-boxes"></i> Gestion du stock</h4>
+                        <button id="initStockBtn" class="btn-gold" style="background:#2c5e2e; padding:8px 16px; width:auto;"><i class="fas fa-database"></i> Initialiser</button>
+                    </div>
+                    <div id="stockList" class="orders-list"></div>
                 </div>
 
-                <!-- GESTION PRODUITS (CRUD) -->
+                <!-- GESTION PRODUITS -->
                 <div id="productsTab" class="subtab-content" style="display:none;">
                     <div class="stock-header">
-                        <h4 style="color:#D4AF37;"><i class="fas fa-edit"></i> Produits</h4>
+                        <h4 style="color:#D4AF37;"><i class="fas fa-edit"></i> Catalogue</h4>
                         <button id="addProductGlobalBtn" class="btn-gold" style="background:#27AE60; padding:8px 16px; width:auto;">+ Ajouter</button>
                     </div>
-                    <div id="productsManageList" class="history-list" style="max-height: 350px;"></div>
+                    <div id="productsManageList" class="orders-list"></div>
+                </div>
+
+                <!-- HISTORIQUE -->
+                <div id="historyTab" class="subtab-content" style="display:none;">
+                    <h4 style="color:#D4AF37; margin-bottom:10px;"><i class="fas fa-clock"></i> Historique complet</h4>
+                    <div id="historyList" class="orders-list"></div>
                 </div>
 
                 <button id="logoutAdmin" class="btn-gold" style="margin-top:15px; background:#e67e22;"><i class="fas fa-sign-out-alt"></i> Quitter</button>
@@ -391,8 +520,6 @@
     </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyBWyJKgpzjajwaIj7qJnYqe0mA1a5tnKok",
@@ -405,7 +532,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // MENU PAR DÉFAUT RDC
+    // MENU PAR DÉFAUT
     const DEFAULT_DRINKS = {
         alcool: [{ name: "Primus", brand: "Bralima" }, { name: "Mutzig", brand: "Brasimba" }, { name: "Turbo King", brand: "Bralima" }, { name: "Beaufort", brand: "Brasimba" }, { name: "Castel", brand: "Castel" }, { name: "Heineken", brand: "Heineken" }, { name: "Legend", brand: "Bralima" }, { name: "Class", brand: "Bralima" }, { name: "Skol", brand: "Bralima" }, { name: "DOGGO", brand: "Brasimba" }],
         sucree: [{ name: "Coca-Cola", brand: "Bralima" }, { name: "Fanta Orange", brand: "Bralima" }, { name: "Fanta Citron", brand: "Bralima" }, { name: "Sprite", brand: "Bralima" }, { name: "Maltina", brand: "Nestlé" }, { name: "Energy Malt", brand: "Bralima" }, { name: "Vitalo", brand: "Brasimba" }, { name: "Tonic", brand: "Schweppes" }, { name: "Jus d'Orange", brand: "Fruitex" }, { name: "Jus de Mangue", brand: "Fruitex" }],
@@ -434,7 +561,7 @@
         if(document.querySelector('.table-btn')) document.querySelector('.table-btn').classList.add('active-table');
     }
 
-    // Afficher les boissons depuis Firestore
+    // Afficher les boissons
     async function displayDrinks() {
         const snapshot = await db.collection('drinks').where('category', '==', currentMenu).get();
         let drinks = [];
@@ -442,25 +569,49 @@
         else drinks = DEFAULT_DRINKS[currentMenu] || [];
         
         const container = document.getElementById('drinksList');
-        container.innerHTML = drinks.map(d => `<div class="drink-item" data-name="${d.name}"><span>${d.name}</span><span><i class="fas fa-plus-circle" style="color:#D4AF37;"></i></span></div>`).join('');
+        container.innerHTML = drinks.map(d => `
+            <div class="drink-item" data-name="${d.name}">
+                <div class="drink-info">
+                    <div class="drink-name">${d.name}</div>
+                    <div class="drink-brand">${d.brand || ''}</div>
+                </div>
+                <div class="drink-add"><i class="fas fa-plus"></i></div>
+            </div>
+        `).join('');
         document.querySelectorAll('.drink-item').forEach(el => {
             el.addEventListener('click', () => { addToCart(el.dataset.name); showToast(`✓ ${el.dataset.name}`, 800); });
         });
     }
 
-    function addToCart(name) { let exist = cart.find(i => i.name === name); if(exist) exist.quantity++; else cart.push({ name, quantity: 1 }); updateCart(); }
+    function addToCart(name) { 
+        let exist = cart.find(i => i.name === name); 
+        if(exist) exist.quantity++; 
+        else cart.push({ name, quantity: 1 }); 
+        updateCart(); 
+    }
+    
     function updateCart() {
         const container = document.getElementById('cartItems');
-        if (!cart.length) { container.innerHTML = '<div style="color:#aaa;">Aucune boisson</div>'; return; }
-        container.innerHTML = cart.map((item, idx) => `<div style="display:flex; justify-content:space-between; margin:5px 0;">${item.name} x${item.quantity} <button class="remove-item" data-idx="${idx}" style="background:none; border:none; color:#ff8866;">🗑️</button></div>`).join('');
+        if (!cart.length) { container.innerHTML = '<div style="color:#aaa; text-align:center;">Aucune boisson</div>'; return; }
+        container.innerHTML = cart.map((item, idx) => `
+            <div class="cart-item">
+                <span>${item.name} x${item.quantity}</span>
+                <button class="remove-item" data-idx="${idx}" style="background:none; border:none; color:#ff8866;"><i class="fas fa-trash"></i></button>
+            </div>
+        `).join('');
         document.querySelectorAll('.remove-item').forEach(btn => { btn.onclick = () => { cart.splice(parseInt(btn.dataset.idx),1); updateCart(); }; });
     }
 
     async function confirmOrder() {
         if (!cart.length) { showToast("Ajoutez des boissons", 1000); return; }
         const items = cart.map(i => ({ name: i.name, quantity: i.quantity }));
-        await db.collection('orders').add({ table: currentTable, items, status: "pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-        // Mettre à jour le stock en temps réel (décrémenter)
+        await db.collection('orders').add({ 
+            table: currentTable, 
+            items, 
+            status: "pending", 
+            timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+        });
+        // Décrémenter le stock
         for (let item of cart) {
             const stockRef = db.collection('stock').where('name', '==', item.name);
             const snap = await stockRef.get();
@@ -474,7 +625,105 @@
         cart = []; updateCart();
     }
 
-    // ========== ADMIN : STOCK, STATS, HISTORIQUE ==========
+    // ========== ADMIN : COMMANDES EN TEMPS RÉEL ==========
+    function listenLiveOrders() {
+        db.collection('orders').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+            if (!adminLogged) return;
+            
+            const container = document.getElementById('liveOrdersList');
+            if (!container) return;
+            
+            let pending = 0, confirmed = 0, served = 0;
+            let html = '';
+            
+            snapshot.forEach(doc => {
+                const order = doc.data();
+                const status = order.status || 'pending';
+                if (status === 'pending') pending++;
+                if (status === 'confirmed') confirmed++;
+                if (status === 'served') served++;
+                
+                const time = order.timestamp?.toDate().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) || '';
+                
+                html += `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-table"><i class="fas fa-chair"></i> Table ${order.table}</span>
+                            <span class="order-time">${time}</span>
+                            <span class="order-status status-${status}">${status === 'pending' ? '⏳ En attente' : status === 'confirmed' ? '🍳 En préparation' : '✅ Servi'}</span>
+                        </div>
+                        <div class="order-items">
+                            ${order.items.map(i => `${i.name} x${i.quantity}`).join(' • ')}
+                        </div>
+                        <div class="order-actions">
+                            ${status === 'pending' ? `<button class="order-btn btn-prepare" data-id="${doc.id}"><i class="fas fa-utensils"></i> Préparer</button>` : ''}
+                            ${status === 'confirmed' ? `<button class="order-btn btn-serve" data-id="${doc.id}"><i class="fas fa-check"></i> Servir</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html || '<div style="text-align:center; color:#aaa;">Aucune commande en cours</div>';
+            document.getElementById('pendingCount').innerText = pending;
+            document.getElementById('confirmedCount').innerText = confirmed;
+            document.getElementById('servedCount').innerText = served;
+            
+            // Attacher les événements
+            document.querySelectorAll('.btn-prepare').forEach(btn => {
+                btn.onclick = async () => await db.collection('orders').doc(btn.dataset.id).update({ status: "confirmed" });
+            });
+            document.querySelectorAll('.btn-serve').forEach(btn => {
+                btn.onclick = async () => await db.collection('orders').doc(btn.dataset.id).update({ status: "served" });
+            });
+        });
+    }
+    
+    // Statistiques
+    async function loadStats() {
+        const ordersSnap = await db.collection('orders').get();
+        let totalDrinks = 0, tablesSet = new Set();
+        let drinkCount = {};
+        
+        ordersSnap.forEach(o => { 
+            const items = o.data().items || [];
+            totalDrinks += items.reduce((s,i)=>s+i.quantity,0); 
+            tablesSet.add(o.data().table);
+            items.forEach(i => { drinkCount[i.name] = (drinkCount[i.name] || 0) + i.quantity; });
+        });
+        
+        document.getElementById('totalOrders').innerText = ordersSnap.size;
+        document.getElementById('totalDrinks').innerText = totalDrinks;
+        document.getElementById('tablesServed').innerText = tablesSet.size;
+        
+        let sorted = Object.entries(drinkCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+        if (topDrinksChart) topDrinksChart.destroy();
+        const ctx = document.getElementById('topDrinksChart').getContext('2d');
+        topDrinksChart = new Chart(ctx, { type: 'bar', data: { labels: sorted.map(s=>s[0]), datasets: [{ label: 'Quantité', data: sorted.map(s=>s[1]), backgroundColor: '#D4AF37' }] }, options: { responsive: true, maintainAspectRatio: true } });
+    }
+    
+    // Stock
+    async function loadStock() {
+        const stockSnap = await db.collection('stock').get();
+        const container = document.getElementById('stockList');
+        if (stockSnap.empty) { container.innerHTML = '<div style="color:#aaa;">Aucun stock, cliquez sur "Initialiser"</div>'; return; }
+        let html = '';
+        for (let doc of stockSnap.docs) {
+            const data = doc.data();
+            const consumed = (data.initialQty || data.quantity || 0) - (data.quantity || 0);
+            html += `<div class="stock-item">
+                        <div class="stock-info">
+                            <h4>${data.name}</h4>
+                            <p>${data.category || ''}</p>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="stock-quantity">${data.quantity || 0} restant</div>
+                            <div class="stock-consumed">${consumed} consommé</div>
+                        </div>
+                    </div>`;
+        }
+        container.innerHTML = html;
+    }
+    
     async function initStock() {
         const products = await db.collection('drinks').get();
         if (products.empty) return;
@@ -485,38 +734,11 @@
             }
         }
         showToast("Stock initialisé (50 par défaut)", 1500);
-        loadStockAndStats();
+        loadStock();
+        loadStats();
     }
-
-    async function loadStockAndStats() {
-        const stockSnap = await db.collection('stock').get();
-        const container = document.getElementById('stockList');
-        if (stockSnap.empty) { container.innerHTML = '<div style="color:#aaa;">Aucun stock, cliquez sur "Initialiser"</div>'; return; }
-        let html = '';
-        for (let doc of stockSnap.docs) {
-            const data = doc.data();
-            const consumed = (data.initialQty || data.quantity || 0) - (data.quantity || 0);
-            html += `<div class="stock-item"><div><strong style="color:#FFE8C7;">${data.name}</strong><br><span style="font-size:0.7rem;">Restant: ${data.quantity || 0}</span></div><div style="color:#D4AF37;">Consommé: ${consumed}</div></div>`;
-        }
-        container.innerHTML = html;
-
-        // Statistiques
-        const ordersSnap = await db.collection('orders').get();
-        let totalDrinks = 0, tablesSet = new Set();
-        ordersSnap.forEach(o => { totalDrinks += (o.data().items || []).reduce((s,i)=>s+i.quantity,0); tablesSet.add(o.data().table); });
-        document.getElementById('totalOrders').innerText = ordersSnap.size;
-        document.getElementById('totalDrinks').innerText = totalDrinks;
-        document.getElementById('tablesServed').innerText = tablesSet.size;
-
-        // Top boissons
-        let drinkCount = {};
-        ordersSnap.forEach(o => { (o.data().items || []).forEach(i => { drinkCount[i.name] = (drinkCount[i.name] || 0) + i.quantity; }); });
-        let sorted = Object.entries(drinkCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
-        if (topDrinksChart) topDrinksChart.destroy();
-        const ctx = document.getElementById('topDrinksChart').getContext('2d');
-        topDrinksChart = new Chart(ctx, { type: 'bar', data: { labels: sorted.map(s=>s[0]), datasets: [{ label: 'Quantité', data: sorted.map(s=>s[1]), backgroundColor: '#D4AF37' }] }, options: { responsive: true, maintainAspectRatio: true } });
-    }
-
+    
+    // Historique
     async function loadHistory() {
         const orders = await db.collection('orders').orderBy('timestamp', 'desc').get();
         const container = document.getElementById('historyList');
@@ -524,12 +746,20 @@
         let html = '';
         orders.forEach(doc => {
             const o = doc.data();
-            const time = o.timestamp?.toDate().toLocaleTimeString() || '';
-            html += `<div class="history-item"><div class="history-detail"><div class="history-name">Table ${o.table}</div><div class="history-meta">${time}</div></div><div style="text-align:right;">${o.items.map(i=>`${i.name} x${i.quantity}`).join('<br>')}</div></div>`;
+            const time = o.timestamp?.toDate().toLocaleString('fr-FR') || '';
+            html += `<div class="order-card">
+                        <div class="order-header">
+                            <span class="order-table">Table ${o.table}</span>
+                            <span class="order-time">${time}</span>
+                            <span class="order-status status-${o.status || 'pending'}">${o.status || 'pending'}</span>
+                        </div>
+                        <div class="order-items">${o.items.map(i=>`${i.name} x${i.quantity}`).join(' • ')}</div>
+                    </div>`;
         });
         container.innerHTML = html;
     }
-
+    
+    // Gestion produits
     async function loadProductsManage() {
         const products = await db.collection('drinks').get();
         const container = document.getElementById('productsManageList');
@@ -537,27 +767,37 @@
         let html = '';
         products.forEach(doc => {
             const p = doc.data();
-            html += `<div class="stock-item"><div><h4>${p.name}</h4><p>${p.category} • ${p.brand || ''}</p></div><div><button class="edit-prod" data-id="${doc.id}" data-name="${p.name}" data-brand="${p.brand||''}" data-cat="${p.category}" style="background:none; color:#F39C12;"><i class="fas fa-edit"></i></button><button class="delete-prod" data-id="${doc.id}" style="background:none; color:#E74C3C;"><i class="fas fa-trash"></i></button></div></div>`;
+            html += `<div class="stock-item">
+                        <div class="stock-info">
+                            <h4>${p.name}</h4>
+                            <p>${p.category} • ${p.brand || ''}</p>
+                        </div>
+                        <div>
+                            <button class="edit-prod" data-id="${doc.id}" data-name="${p.name}" data-brand="${p.brand||''}" data-cat="${p.category}" style="background:none; color:#F39C12; margin-right:8px;"><i class="fas fa-edit"></i></button>
+                            <button class="delete-prod" data-id="${doc.id}" style="background:none; color:#E74C3C;"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>`;
         });
         container.innerHTML = html;
         document.querySelectorAll('.edit-prod').forEach(btn => btn.onclick = () => openEditProduct(btn.dataset.id, btn.dataset.name, btn.dataset.brand, btn.dataset.cat));
         document.querySelectorAll('.delete-prod').forEach(btn => btn.onclick = async () => { if(confirm("Supprimer ?")) { await db.collection('drinks').doc(btn.dataset.id).delete(); loadProductsManage(); displayDrinks(); showToast("Supprimé",1000); } });
     }
-
+    
     function openAddProduct() {
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;">Ajouter</h3><input id="prodName" placeholder="Nom"><input id="prodBrand" placeholder="Marque"><select id="prodCat"><option value="alcool">Bières</option><option value="sucree">Sucrées</option><option value="whisky">Whisky</option><option value="vin">Vins</option><option value="eaux">Eaux</option></select><div class="modal-buttons" style="display:flex; gap:10px; margin-top:15px;"><button id="saveProd" style="background:#27AE60;">Ajouter</button><button id="closeModal">Annuler</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;">Ajouter</h3><input id="prodName" placeholder="Nom"><input id="prodBrand" placeholder="Marque"><select id="prodCat"><option value="alcool">Bières</option><option value="sucree">Sucrées</option><option value="whisky">Whisky</option><option value="vin">Vins</option><option value="eaux">Eaux</option></select><div style="display:flex; gap:10px; margin-top:15px;"><button id="saveProd" style="background:#27AE60;">Ajouter</button><button id="closeModal">Annuler</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById('saveProd').onclick = async () => {
             const name = document.getElementById('prodName').value.trim();
             if(!name) return;
-            await db.collection('drinks').add({ name, brand: document.getElementById('prodBrand').value, category: document.getElementById('prodCat').value });
-            await db.collection('stock').add({ name, quantity: 50, initialQty: 50, category: document.getElementById('prodCat').value });
-            modal.remove(); loadProductsManage(); displayDrinks(); loadStockAndStats(); showToast("Ajouté",1000);
+            const category = document.getElementById('prodCat').value;
+            await db.collection('drinks').add({ name, brand: document.getElementById('prodBrand').value, category });
+            await db.collection('stock').add({ name, quantity: 50, initialQty: 50, category });
+            modal.remove(); loadProductsManage(); displayDrinks(); loadStock(); showToast("Ajouté",1000);
         };
         document.getElementById('closeModal').onclick = () => modal.remove();
     }
-
+    
     function openEditProduct(id, oldName, oldBrand, oldCat) {
         const modal = document.createElement('div'); modal.className = 'modal';
         modal.innerHTML = `<div class="modal-content"><h3>Modifier</h3><input id="prodName" value="${oldName}"><input id="prodBrand" value="${oldBrand}"><select id="prodCat"><option ${oldCat==='alcool'?'selected':''} value="alcool">Bières</option><option ${oldCat==='sucree'?'selected':''} value="sucree">Sucrées</option><option ${oldCat==='whisky'?'selected':''} value="whisky">Whisky</option><option ${oldCat==='vin'?'selected':''} value="vin">Vins</option><option ${oldCat==='eaux'?'selected':''} value="eaux">Eaux</option></select><div style="display:flex; gap:10px; margin-top:15px;"><button id="updateProd" style="background:#F39C12;">Modifier</button><button id="closeModal">Annuler</button></div></div>`;
@@ -568,15 +808,9 @@
         };
         document.getElementById('closeModal').onclick = () => modal.remove();
     }
-
-    // Écoute en temps réel pour mettre à jour stats et historique
-    function realtimeUpdates() {
-        db.collection('orders').onSnapshot(() => { if(adminLogged){ loadStockAndStats(); loadHistory(); } });
-        db.collection('stock').onSnapshot(() => { if(adminLogged) loadStockAndStats(); });
-    }
-
+    
     function showToast(msg, dur=1500) { let t=document.querySelector('.toast'); if(t) t.remove(); let toast=document.createElement('div'); toast.className='toast'; toast.innerText=msg; document.body.appendChild(toast); setTimeout(()=>toast.remove(),dur); }
-
+    
     // Navigation
     function initNav() {
         document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -588,14 +822,14 @@
                 if(btn.dataset.page === 'admin') {
                     document.getElementById('adminLoginArea').style.display = adminLogged ? 'none' : 'block';
                     document.getElementById('adminDashboardArea').style.display = adminLogged ? 'block' : 'none';
-                    if(adminLogged){ loadStockAndStats(); loadHistory(); loadProductsManage(); }
+                    if(adminLogged){ loadStats(); loadStock(); loadHistory(); loadProductsManage(); listenLiveOrders(); }
                 }
             };
         });
         document.getElementById('startOrderBtn').onclick = () => document.querySelector('[data-page="order"]').click();
     }
-
-    // Sous-onglets gestion
+    
+    // Sous-onglets
     function initSubTabs() {
         document.querySelectorAll('.subtab').forEach(tab => {
             tab.onclick = () => {
@@ -603,10 +837,14 @@
                 tab.classList.add('active-sub');
                 document.querySelectorAll('.subtab-content').forEach(c=>c.style.display='none');
                 document.getElementById(tab.dataset.subtab+'Tab').style.display = 'block';
+                if(tab.dataset.subtab === 'orders') listenLiveOrders();
+                if(tab.dataset.subtab === 'stats') loadStats();
+                if(tab.dataset.subtab === 'stock') loadStock();
+                if(tab.dataset.subtab === 'history') loadHistory();
             };
         });
     }
-
+    
     window.addEventListener('DOMContentLoaded', async () => {
         genTables(); await displayDrinks(); updateCart();
         document.getElementById('confirmOrderBtn').onclick = confirmOrder;
@@ -619,21 +857,21 @@
             };
         });
         initNav(); initSubTabs();
-
+        
         // Admin login
         document.getElementById('loginBtn').onclick = () => {
             if(document.getElementById('adminPassword').value === ADMIN_PASS) {
                 adminLogged = true;
                 document.getElementById('adminLoginArea').style.display = 'none';
                 document.getElementById('adminDashboardArea').style.display = 'block';
-                loadStockAndStats(); loadHistory(); loadProductsManage(); realtimeUpdates();
+                loadStats(); loadStock(); loadHistory(); loadProductsManage(); listenLiveOrders();
                 showToast("Bienvenue gestionnaire", 1500);
             } else showToast("Mot de passe incorrect", 1000);
         };
         document.getElementById('logoutAdmin').onclick = () => { adminLogged = false; location.reload(); };
         document.getElementById('initStockBtn').onclick = initStock;
         document.getElementById('addProductGlobalBtn').onclick = openAddProduct;
-
+        
         // Initialisation auto si vide
         const drinksCheck = await db.collection('drinks').limit(1).get();
         if(drinksCheck.empty) {
